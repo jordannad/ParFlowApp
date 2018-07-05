@@ -1,0 +1,36 @@
+# Dockerfile containing all the dependencies required to build and run
+# the web UI.
+#
+# Code is added in by building Dockerfile.prod 
+
+FROM ubuntu:latest
+
+MAINTAINER JarJar!
+
+# Install basics.
+RUN apt-get update
+RUN apt-get install -y tar \
+                       git \
+                       curl \
+                       nano \
+                       wget \
+                       dialog \
+                       net-tools \
+                       python-pip \
+                       python-dev \
+                       python-distribute \
+                       build-essential \
+                       software-properties-common \
+                       python-software-properties \
+                       apt-transport-https
+
+# Install docker within the docker container so you can control docker
+# containers
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+RUN apt-get update
+RUN apt-get install -y docker-ce
+
+COPY requirements.txt /
+RUN pip install -r requirements.txt
+WORKDIR /web

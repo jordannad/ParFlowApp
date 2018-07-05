@@ -1,0 +1,7 @@
+# Builds the production container to run on a cluster.
+
+FROM demo/dev
+
+COPY web /web
+ENTRYPOINT ["/usr/bin/python"]
+CMD ["app.py"]
