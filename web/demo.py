@@ -19,7 +19,7 @@ class ReusableForm(Form):
 def index():
   return render_template('index.html')
 
-@app.route('/foo', methods=['GET'])
+@app.route('/run', methods=['GET'])
 def foo():
   form = ReusableForm(request.form)
   return render_template('form.html', form=form)
