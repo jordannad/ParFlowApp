@@ -2,11 +2,13 @@ function plotData(data) {
     // Set the dimensions of the canvas / graph
     var margin = {top: 30, right: 20, bottom: 30, left: 100},
     width = 600 - margin.left - margin.right,
-    height = 270 - margin.top - margin.bottom;
+    height = 350 - margin.top - margin.bottom;
+    var padding = 25;
 
     // Set the ranges
-    var x = d3.scale.linear().range([0, width]);
-    var y = d3.scale.linear().range([height, 0]);
+   // var x = d3.scale.linear().range([0, width]);
+    var x = d3.scale.linear().range([padding, width - padding]);
+    var y = d3.scale.linear().range([height - padding, padding]);
 
     // Define the axes
     var xAxis = d3.svg.axis().scale(x)
@@ -24,7 +26,7 @@ function plotData(data) {
     var svg = d3.select("#plot1")
       .append("svg")
           .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
+          .attr("height", height + margin.top + margin.bottom + padding)
       .append("g")
           .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
@@ -50,12 +52,30 @@ function plotData(data) {
     // Add the X Axis
     svg.append("g")
         .attr("class", "x axis")
-        .attr("transform", "translate(0," + height + ")")
+        //.attr("transform", "translate(0," + height + ")")
+        .attr("transform", "translate(0," + (height - padding) + ")")
         .call(xAxis);
+
+    // text label for the x axis
+    svg.append("text")
+        //.attr("transform", "translate(" + (width /2) + "," + (height + margin.bottom) + ")")
+        .attr("transform", "translate(" + (width /2) + "," + (height + padding) + ")")
+        .style("text-anchor", "middle")
+        .text("Month since start");
 
     // Add the Y Axis
     svg.append("g")
         .attr("class", "y axis")
+        .attr("transform", "translate("+padding+",0)")
         .call(yAxis);
+
+    // text label for the y axis
+    svg.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("y", 0 - margin.left)
+        .attr("x",0 - (height / 2))
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .text("Subsurface storage (cubic meters)");
 
 }
